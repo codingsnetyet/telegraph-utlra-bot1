@@ -11,6 +11,11 @@ import config
 
 app = Flask(__name__)
 
+# ------------------------- #
+# Don't Remove Credit 
+# Ask Doubt @AU_Bot_Discussion 
+# Owner @Mr_Mohammed_29 
+# ------------------------- #
 
 @app.route("/")
 def home():
@@ -23,6 +28,11 @@ def run_web():
         port=8080
     )
 
+# ------------------------- #
+# Don't Remove Credit 
+# Ask Doubt @AU_Bot_Discussion 
+# Owner @Mr_Mohammed_29 
+# ------------------------- #
 
 bot = Client(
     "TelegraphUltraBot",
