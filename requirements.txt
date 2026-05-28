@@ -8,6 +8,8 @@ pyrogram
 tgcrypto
 telegraph
 pymongo
+flask
+gunicorn
 pillow
 
 # ------------------------- #
