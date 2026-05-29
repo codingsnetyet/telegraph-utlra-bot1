@@ -8,6 +8,8 @@ from pymongo import MongoClient
 import config
 import time
 
+user_images = db.user_images
+
 # ---------------- CONNECTION ---------------- #
 
 client = MongoClient(config.MONGO_URL, serverSelectionTimeoutMS=5000)
