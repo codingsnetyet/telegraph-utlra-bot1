@@ -8,7 +8,7 @@ import os
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from telegraph import Telegraph
-from database import save_post
+from database import save_post, user_images
 
 # ---------------- TELEGRAPH INIT ---------------- #
 
@@ -19,11 +19,6 @@ try:
 except:
     pass
 
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
 
 # ---------------- HTML FORMAT ---------------- #
 
@@ -37,11 +32,6 @@ def html_format(text):
              .replace("\n", "<br>")
     )
 
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
 
 # ---------------- CREATE PAGE ---------------- #
 
@@ -52,11 +42,6 @@ def create_page(title, content):
     )
     return response["url"]
 
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
 
 # ---------------- CREATE /TGM ---------------- #
 
@@ -116,15 +101,15 @@ async def telegraph(_, message):
             "❌ Send text or reply to photo/gif/text"
         )
 
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
 
     # ---------------- BUILD CONTENT ---------------- #
 
     content = ""
+
+    # ✅ STORED IMAGE FROM /PHOTO COMMAND
+    img_data = user_images.find_one({"user_id": message.from_user.id})
+    if img_data:
+        content += f'<img src="{img_data["image"]}"><br>'
 
     if text:
         content += f"<p>{html_format(text)}</p>"
@@ -132,24 +117,16 @@ async def telegraph(_, message):
     if media_html:
         content += media_html
 
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
 
     # ---------------- FOOTER ---------------- #
 
     content += """
     <hr>
     <p><b>ᴄʜᴀɴɴᴇʟ :</b> <a href="https://t.me/Anime_UpdatesAU">ᴀɴɪᴍᴇ ᴜᴘᴅᴀᴛᴇs ᴀᴜ</a></p>
-    <p><b>ᴅᴇᴠᴇʟᴏᴘᴇʀ:</b> <a href="https://t.me/Mr_Mohammed_29">ᴍᴏʜᴀᴍᴍᴇᴅ</a></p>
+    <p><b>ᴅᴇᴠᴇʟᴏᴘᴇʀ :</b> <a href="https://t.me/Mr_Mohammed_29">ᴍᴏʜᴀᴍᴍᴇᴅ</a></p>
     """
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
+
+
     # ---------------- CREATE PAGE ---------------- #
 
     url = create_page(title, content)
@@ -163,35 +140,33 @@ async def telegraph(_, message):
         )
     )
 
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
 
-# ---------------- IMAGE UPLOAD ---------------- #
+# ---------------- IMAGE SAVE (PERMANENT) ---------------- #
 
 @Client.on_message(filters.photo)
 async def upload_photo(_, message):
 
+    user_id = message.from_user.id
     file_path = await message.download()
 
     try:
         response = tg.upload_file(file_path)
-
         telegraph_url = "https://telegra.ph" + response[0]
 
-        await message.reply_text(
-            f"🖼 Uploaded To Telegraph\n\n{telegraph_url}"
+        # ✅ SAVE IN MONGODB
+        user_images.update_one(
+            {"user_id": user_id},
+            {"$set": {"image": telegraph_url}},
+            upsert=True
         )
 
-    except Exception as e:
-        await message.reply_text(str(e))
+        await message.reply_text(
+            "🖼 Image saved!\nNow use /tgm your text"
+        )
 
     finally:
         if os.path.exists(file_path):
             os.remove(file_path)
-
 
 # ------------------------- #
 # Don't Remove Credit 
