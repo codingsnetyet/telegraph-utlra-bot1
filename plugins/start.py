@@ -115,6 +115,18 @@ async def callback_handler(client: Client, query: CallbackQuery):
             reply_markup=back_button()
         )
 
+    elif data == "close_panel":
+        await query.message.delete()
+
+    elif data == "stats_panel":
+        await query.message.edit_text("Use /stats")
+
+    elif data == "broadcast_panel":
+        await query.message.edit_text("Reply and use /broadcast")
+
+    elif data == "batch_panel":
+        await query.message.edit_text("Use /batch command")
+
 # ------------------------- #
 # Don't Remove Credit 
 # Ask Doubt @AU_Bot_Discussion 
