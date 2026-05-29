@@ -52,11 +52,11 @@ def settings_buttons(user_id, post_count, account_name, author_name):
 async def settings(_, message):
 
     user_id = message.from_user.id
+    first_name = message.from_user.first_name  # Telegram fallback
 
     post_count = posts.count_documents({"user_id": user_id})
 
-    # ✅ fetch user settings from DB
-    user_data = get_user_settings(user_id)
+    user_data = get_user_settings(user_id, telegram_first_name=first_name)
 
     account_name = user_data["account_name"]
     author_name = user_data["author_name"]
@@ -66,23 +66,13 @@ async def settings(_, message):
 
 User ID: {user_id}
 Domain: Telegraph
-Default Page Title: @AU_Telegraph_Post_Bot
 
 Account Name: {account_name}
 Author Name: {author_name}
-Profile Link: https://t.me/{author_name}
 No. of Posts: {post_count}
 """
 
-    await message.reply_text(
-        text,
-        reply_markup=settings_buttons(
-            user_id,
-            post_count,
-            account_name,
-            author_name
-        )
-    )
+    await message.reply_text(text)
     
 # ------------------------- #
 # Don't Remove Credit 
