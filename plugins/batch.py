@@ -3,6 +3,7 @@
 # Ask Doubt @AU_Bot_Discussion 
 # Owner @Mr_Mohammed_29 
 # ------------------------- #
+
 from pyrogram import Client, filters
 from telegraph import Telegraph
 from database import save_batch
@@ -13,12 +14,9 @@ try:
     tg.create_account(short_name="batch-bot")
 except Exception as e:
     print("Telegraph account error:", e)
-    
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
+
+
+# ---------------- CREATE PAGE ---------------- #
 
 def create_page(title, content):
     try:
@@ -32,11 +30,9 @@ def create_page(title, content):
         print("Telegraph error:", e)
         return None
 
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
+
+# ---------------- BATCH COMMAND ---------------- #
+
 @Client.on_message(filters.command("batch"))
 async def batch(_, message):
 
@@ -55,27 +51,29 @@ async def batch(_, message):
 
     if not texts:
         return await message.reply_text("❌ No text found")
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
-    # ---------------- HTML BUILD (FIXED) ---------------- #
+
+
+    # ---------------- HTML BUILD ---------------- #
+
     content = f"<b>{title}</b>\n\n"
 
+    # ✅ Each episode in clean block
     for i, t in enumerate(texts, 1):
-        content += f"<b>{i}.</b> {t}\n\n"
+        content += (
+            f"<p><b>{title} {i}.</b> {t}</p>\n"
+            "<hr>\n"
+        )
 
-    content += "\n<b>ᴄʜᴀɴɴᴇʟ :</b> <a href='https://t.me/Anime_UpdatesAU'>ᴀɴɪᴍᴇ ᴜᴘᴅᴀᴛᴇs ᴀᴜ</a>\n"
-    content += "<b>ᴅᴇᴠᴇʟᴏᴘᴇʀ :</b> <a href='https://t.me/Mr_Mohammed_29'>ᴍᴏʜᴀᴍᴍᴇᴅ</a>"
+    # ---------------- FOOTER (ONLY ONCE) ---------------- #
 
-    # ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
+    content += """
+    <br><br>
+    <p><b>ᴄʜᴀɴɴᴇʟ :</b> <a href="https://t.me/Anime_UpdatesAU">ᴀɴɪᴍᴇ ᴜᴘᴅᴀᴛᴇs ᴀᴜ</a></p>
+    <p><b>ᴅᴇᴠᴇʟᴏᴘᴇʀ :</b> <a href="https://t.me/Mr_Mohammed_29">ᴍᴏʜᴀᴍᴍᴇᴅ</a></p>
+    """
 
     # ---------------- CREATE PAGE ---------------- #
+
     url = create_page(title, content)
 
     if not url:
