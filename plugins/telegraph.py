@@ -142,8 +142,8 @@ async def telegraph(_, message):
 
     content += """
     <hr>
-    <p><b>Channel:</b> @Anime_UpdatesAU</p>
-    <p><b>Owner:</b> @Mr_Mohammed_29</p>
+    <p><b>ᴄʜᴀɴɴᴇʟ :</b> <a href="https://t.me/Anime_UpdatesAU">ᴀɴɪᴍᴇ ᴜᴘᴅᴀᴛᴇs ᴀᴜ</a></p>
+    <p><b>ᴅᴇᴠᴇʟᴏᴘᴇʀ:</b> <a href="https://t.me/Mr_Mohammed_29">ᴍᴏʜᴀᴍᴍᴇᴅ</a></p>
     """
 # ------------------------- #
 # Don't Remove Credit 
