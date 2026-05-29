@@ -1,18 +1,18 @@
-
 # ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
+# Don't Remove Credit
+# Ask Doubt @AU_Bot_Discussion
+# Owner @Mr_Mohammed_29
 # ------------------------- #
 
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from database import posts
+from utils.user_settings import get_user_settings
 
 
 # ---------------- BUTTONS ---------------- #
 
-def settings_buttons(user_id, post_count):
+def settings_buttons(user_id, post_count, account_name, author_name):
 
     return InlineKeyboardMarkup([
         [
@@ -25,13 +25,16 @@ def settings_buttons(user_id, post_count):
             InlineKeyboardButton("DEFAULT PAGE : @AU_Telegraph_Post_Bot", callback_data="noop")
         ],
         [
-            InlineKeyboardButton("ACCOUNT NAME : Mohammed", callback_data="noop")
+            InlineKeyboardButton(f"ACCOUNT NAME : {account_name}", callback_data="noop")
         ],
         [
-            InlineKeyboardButton("AUTHOR : Mr_Mohammed_29", callback_data="noop")
+            InlineKeyboardButton(f"AUTHOR : {author_name}", callback_data="noop")
         ],
         [
-            InlineKeyboardButton("PROFILE LINK", url="https://t.me/Mr_Mohammed_29")
+            InlineKeyboardButton(
+                "PROFILE LINK",
+                url=f"https://t.me/{author_name}"
+            )
         ],
         [
             InlineKeyboardButton(f"NO. OF POSTS : {post_count}", callback_data="noop")
@@ -42,11 +45,6 @@ def settings_buttons(user_id, post_count):
         ]
     ])
 
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
 
 # ---------------- SETTINGS COMMAND ---------------- #
 
@@ -57,6 +55,12 @@ async def settings(_, message):
 
     post_count = posts.count_documents({"user_id": user_id})
 
+    # ✅ fetch user settings from DB
+    user_data = get_user_settings(user_id)
+
+    account_name = user_data["account_name"]
+    author_name = user_data["author_name"]
+
     text = f"""
 ⚙️ ACCOUNT SETTINGS
 
@@ -64,17 +68,22 @@ User ID: {user_id}
 Domain: Telegraph
 Default Page Title: @AU_Telegraph_Post_Bot
 
-Account Name: Mohammed
-Author Name: Mr_Mohammed_29
-Profile Link: https://t.me/Mr_Mohammed_29
+Account Name: {account_name}
+Author Name: {author_name}
+Profile Link: https://t.me/{author_name}
 No. of Posts: {post_count}
 """
 
     await message.reply_text(
         text,
-        reply_markup=settings_buttons(user_id, post_count)
+        reply_markup=settings_buttons(
+            user_id,
+            post_count,
+            account_name,
+            author_name
+        )
     )
-
+    
 # ------------------------- #
 # Don't Remove Credit 
 # Ask Doubt @AU_Bot_Discussion 
