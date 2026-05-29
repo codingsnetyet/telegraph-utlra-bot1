@@ -66,10 +66,8 @@ async def batch(_, message):
     for i, t in enumerate(texts, 1):
         content += f"<b>{i}.</b> {t}\n\n"
 
-    content += """
-    <b>Channel:</b> @Anime_UpdatesAU<br>
-    <b>Owner:</b> @Mr_Mohammed_29
-    """
+    content += "\n<b>ᴄʜᴀɴɴᴇʟ :</b> <a href='https://t.me/Anime_UpdatesAU'>ᴀɴɪᴍᴇ ᴜᴘᴅᴀᴛᴇs ᴀᴜ</a>\n"
+    content += "<b>ᴅᴇᴠᴇʟᴏᴘᴇʀ :</b> <a href='https://t.me/Mr_Mohammed_29'>ᴍᴏʜᴀᴍᴍᴇᴅ</a>"
 
     # ------------------------- #
 # Don't Remove Credit 
