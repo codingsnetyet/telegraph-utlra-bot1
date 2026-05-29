@@ -60,14 +60,13 @@ async def batch(_, message):
 # Ask Doubt @AU_Bot_Discussion 
 # Owner @Mr_Mohammed_29 
 # ------------------------- #
-    # ---------------- HTML BUILD ---------------- #
-    content = f"<h2>{title}</h2><hr>"
+    # ---------------- HTML BUILD (FIXED) ---------------- #
+    content = f"<b>{title}</b>\n\n"
 
     for i, t in enumerate(texts, 1):
-        content += f"<h3>{i}</h3><p>{t}</p><hr>"
+        content += f"<b>{i}.</b> {t}\n\n"
 
     content += """
-    <br><hr>
     <b>Channel:</b> @Anime_UpdatesAU<br>
     <b>Owner:</b> @Mr_Mohammed_29
     """
