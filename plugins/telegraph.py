@@ -7,7 +7,7 @@
 import os
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from telegraph import Telegraph
+from telegraph import Telegraph, upload_file
 from database import save_post, user_images
 
 # ---------------- TELEGRAPH INIT ---------------- #
@@ -69,8 +69,12 @@ async def telegraph(_, message):
         if reply.photo:
             file_path = await reply.download()
             try:
-                response = tg.upload_file(file_path)
-                url = "https://telegra.ph" + response[0]
+                response = upload_file(file_path)
+
+                if isinstance(response, list):
+                    url = "https://telegra.ph" + response[0]
+                else:
+                    url = "https://telegra.ph" + response
                 media_html += f'<img src="{url}"><br>'
             finally:
                 if os.path.exists(file_path):
