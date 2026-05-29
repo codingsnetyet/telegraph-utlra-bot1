@@ -4,8 +4,9 @@
 # Owner @Mr_Mohammed_29 
 # ------------------------- #
 
+import os
 from pyrogram import Client, filters
-from telegraph import Telegraph
+from telegraph import Telegraph, upload_file
 from database import save_batch, user_images
 
 tg = Telegraph()
@@ -104,7 +105,7 @@ async def upload_photo(_, message):
     file_path = await message.download()
 
     try:
-        response = tg.upload_file(file_path)
+        response = upload_file(file_path)
         telegraph_url = "https://telegra.ph" + response[0]
 
         # ✅ STORE MULTIPLE IMAGES
@@ -117,6 +118,9 @@ async def upload_photo(_, message):
         await message.reply_text(
             "🖼 Image added!\nSend more images or use /batch"
         )
+
+    except Exception as e:
+        await message.reply_text(f"❌ {e}")
 
     finally:
         if os.path.exists(file_path):
