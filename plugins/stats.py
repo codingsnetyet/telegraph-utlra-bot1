@@ -3,11 +3,9 @@
 # Ask Doubt @AU_Bot_Discussion 
 # Owner @Mr_Mohammed_29 
 # ------------------------- #
+
 from pyrogram import Client, filters
-from database import (
-    total_users,
-    total_posts
-)
+from database import total_users, total_posts
 import config
 
 # ------------------------- #
@@ -19,19 +17,24 @@ import config
 @Client.on_message(filters.command("stats"))
 async def stats(_, message):
 
+    # OWNER CHECK
     if message.from_user.id != config.OWNER_ID:
-        return
+        return await message.reply_text("❌ You are not allowed to use this command.")
 
-    users = total_users()
+    try:
+        users = total_users()
+        posts = total_posts()
 
-    posts = total_posts()
+    except Exception:
+        return await message.reply_text("⚠️ Database error. Try again later.")
 
     text = f"""
-📊 Bot Statistics
+📊 BOT STATISTICS
 
-👤 Total Users: {users}
-
+👥 Total Users: {users}
 📝 Total Posts: {posts}
+
+⚡ Status: Live
 """
 
     await message.reply_text(text)
