@@ -39,7 +39,6 @@ Owner : @Mr_Mohammed_29
 def start_buttons():
     return InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("🚀 Start", callback_data="start_home"),
             InlineKeyboardButton("📢 Updates", url="https://t.me/Anime_UpdatesAU")
         ],
         [
@@ -103,13 +102,7 @@ async def callback_handler(client: Client, query: CallbackQuery):
 
     data = query.data
 
-    if data == "start_home":
-        await query.message.edit_caption(
-            START_TEXT,
-            reply_markup=start_buttons()
-        )
-
-    elif data == "about":
+    if data == "about":
         await query.message.edit_caption(
             ABOUT_TEXT,
             reply_markup=back_button()
@@ -126,6 +119,15 @@ async def callback_handler(client: Client, query: CallbackQuery):
 
     elif data == "batch_panel":
         await query.message.edit_text("Use /batch command")
+
+    elif data == "reset_settings":
+        await query.message.edit_text(
+            "⚠️ Settings reset completed.",
+            reply_markup=start_buttons()
+        )
+
+    elif data == "noop":
+        await query.answer()
 
 # ------------------------- #
 # Don't Remove Credit 
