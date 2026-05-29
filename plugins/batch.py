@@ -21,11 +21,16 @@ except:
 def create_page(title, content):
     try:
         response = tg.create_page(
-            title=title,
+            title=title[:256],  # safety limit
             html_content=content
         )
-        return response["url"]
-    except:
+
+        print("TELEGRAPH RESPONSE:", response)
+
+        return response.get("url")
+
+    except Exception as e:
+        print("TELEGRAPH ERROR:", e)
         return None
 
 # ------------------------- #
@@ -69,9 +74,15 @@ async def batch(_, message):
     content = f"<h2>{title}</h2><hr>"
 
     for i, text in enumerate(texts, start=1):
+        safe_text = (
+            text.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+        )
+
         content += f"""
         <h3>Page {i}</h3>
-        <p>{text}</p>
+        <p>{safe_text}</p>
         <hr>
         """
 # ------------------------- #
