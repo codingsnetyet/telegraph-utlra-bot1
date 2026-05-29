@@ -3,7 +3,6 @@
 # Ask Doubt @AU_Bot_Discussion 
 # Owner @Mr_Mohammed_29 
 # ------------------------- #
-
 from pyrogram import Client, filters
 from telegraph import Telegraph
 from database import save_batch
@@ -12,25 +11,25 @@ tg = Telegraph()
 
 try:
     tg.create_account(short_name="batch-bot")
-except:
-    pass
-
-
-# ---------------- CREATE PAGE ---------------- #
+except Exception as e:
+    print("Telegraph account error:", e)
+    
+# ------------------------- #
+# Don't Remove Credit 
+# Ask Doubt @AU_Bot_Discussion 
+# Owner @Mr_Mohammed_29 
+# ------------------------- #
 
 def create_page(title, content):
     try:
         response = tg.create_page(
-            title=title[:256],  # safety limit
+            title=title[:100],
             html_content=content
         )
-
-        print("TELEGRAPH RESPONSE:", response)
-
-        return response.get("url")
+        return response["url"]
 
     except Exception as e:
-        print("TELEGRAPH ERROR:", e)
+        print("Telegraph error:", e)
         return None
 
 # ------------------------- #
@@ -38,10 +37,6 @@ def create_page(title, content):
 # Ask Doubt @AU_Bot_Discussion 
 # Owner @Mr_Mohammed_29 
 # ------------------------- #
-
-
-# ---------------- BATCH COMMAND (UPGRADED) ---------------- #
-
 @Client.on_message(filters.command("batch"))
 async def batch(_, message):
 
@@ -54,69 +49,47 @@ async def batch(_, message):
         title, texts = message.text.split("|", 1)
         title = title.split(None, 1)[1].strip()
     except:
-        return await message.reply_text(
-            "❌ Invalid format\nUse:\n/batch Title | text1,text2"
-        )
+        return await message.reply_text("❌ Invalid format")
 
     texts = [t.strip() for t in texts.split(",") if t.strip()]
 
     if not texts:
-        return await message.reply_text("❌ No valid batch content found")
-
+        return await message.reply_text("❌ No text found")
 # ------------------------- #
 # Don't Remove Credit 
 # Ask Doubt @AU_Bot_Discussion 
 # Owner @Mr_Mohammed_29 
 # ------------------------- #
-    
-    # ---------------- BUILD HTML ---------------- #
-
+    # ---------------- HTML BUILD ---------------- #
     content = f"<h2>{title}</h2><hr>"
 
-    for i, text in enumerate(texts, start=1):
-        safe_text = (
-            text.replace("&", "&amp;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
-        )
-
-        content += f"""
-        <h3>Page {i}</h3>
-        <p>{safe_text}</p>
-        <hr>
-        """
-# ------------------------- #
-# Don't Remove Credit 
-# Ask Doubt @AU_Bot_Discussion 
-# Owner @Mr_Mohammed_29 
-# ------------------------- #
-    
-    # ---------------- FOOTER ---------------- #
+    for i, t in enumerate(texts, 1):
+        content += f"<h3>{i}</h3><p>{t}</p><hr>"
 
     content += """
-    <br>
-    <hr>
-    <p><b>Channel:</b> @Anime_UpdatesAU</p>
-    <p><b>Owner:</b> @Mr_Mohammed_29</p>
+    <br><hr>
+    <b>Channel:</b> @Anime_UpdatesAU<br>
+    <b>Owner:</b> @Mr_Mohammed_29
     """
 
-# ------------------------- #
+    # ------------------------- #
 # Don't Remove Credit 
 # Ask Doubt @AU_Bot_Discussion 
 # Owner @Mr_Mohammed_29 
 # ------------------------- #
 
     # ---------------- CREATE PAGE ---------------- #
-
     url = create_page(title, content)
 
     if not url:
-        return await message.reply_text("❌ Failed to create batch page")
+        return await message.reply_text(
+            "❌ Telegraph failed (check logs)"
+        )
 
     save_batch(message.from_user.id, [url])
 
     await message.reply_text(
-        f"✅ Batch Page Created\n\n{url}"
+        f"✅ Batch Created\n\n{url}"
     )
 
 # ------------------------- #
