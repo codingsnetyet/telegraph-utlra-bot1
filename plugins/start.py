@@ -20,9 +20,18 @@ ABOUT_TEXT = """
 🤖 About This Bot
 
 This bot helps you create Telegraph pages, batch uploads, and manage files easily.
-
-⚡ Fast | 🔥 Reliable | 🚀 24/7 Online
+Language : Python 3
+Library : Pyrogram 
+Database : MongoDB
+Channel : @Anime_UpdatesAU 
+Support : @AU_Bot_Discussion 
+Owner : @Mr_Mohammed_29 
 """
+# ------------------------- #
+# Don't Remove Credit 
+# Ask Doubt @AU_Bot_Discussion 
+# Owner @Mr_Mohammed_29 
+# ------------------------- #
 
 
 # ---------------- BUTTONS ---------------- #
@@ -44,6 +53,12 @@ def back_button():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🏠 Home", callback_data="start_home")]
     ])
+
+# ------------------------- #
+# Don't Remove Credit 
+# Ask Doubt @AU_Bot_Discussion 
+# Owner @Mr_Mohammed_29 
+# ------------------------- #
 
 
 # ---------------- START COMMAND ---------------- #
@@ -75,6 +90,11 @@ async def start(client, message):
         reply_markup=start_buttons()
     )
 
+# ------------------------- #
+# Don't Remove Credit 
+# Ask Doubt @AU_Bot_Discussion 
+# Owner @Mr_Mohammed_29 
+# ------------------------- #
 
 # ---------------- CALLBACK ---------------- #
 
